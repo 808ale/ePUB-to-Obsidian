@@ -12,6 +12,49 @@ The notes are named according to the heading text (with illegal filename charact
 - **Resource Linking**: Appends a Resources section to each note, automatically inserting a link to the next note (using the placeholder `<NEXT_NOTE_LINK>`).
 - **Customizable Filenames**: Note filenames are derived from the heading text instead of prefixed numbers or underscores.
 
+## Flowchart
+
+A flowchart of the project's code. 
+
+```mermaid
+flowchart TD
+
+    %% Step 1: Convert Book to MD
+    subgraph Step 1: Convert Book to Single Markdown
+        A["Source Book PDF/ePUB"]
+        A -- feed book --> ConvertScript["epub2obsidian.py<br/>Step 1"]
+        ConvertScript --> ConvertAction["Convert to Markdown"]
+        ConvertAction --> MD_Full["Full Markdown Book single file"]
+    end
+
+    %% Step 2: Split the Markdown by Headings
+    subgraph Step 2: Split Markdown by Headings
+        MD_Full -- feed MD --> SplitScript["epub2obsidian.py<br/>Step 2"]
+        SplitScript --> SplitAction["Split by Specified Heading Level<br/>filename = heading text"]
+        SplitAction --> NotesContent["Chapter Notes"]
+    end
+
+    %% Step 3: Prepend Metadata from YAML Template
+    subgraph Step 3: Prepend YAML Metadata
+        MetadataFile["YAML Template"]
+        MetadataFile -- feed metadata --> MetadataScript["epub2obsidian.py<br/>Step 3"]
+        MetadataScript --> PrependAction["Prepend YAML Front Matter"]
+        PrependAction --> NotesContent
+    end
+
+    %% Step 4: Append Resources Section
+    subgraph Step 4: Append Resources Section
+        ResourcesFile["Resources Template Markdown"]
+        ResourcesFile -- feed resources --> ResourcesScript["epub2obsidian.py<br/>Step 4"]
+        ResourcesScript --> AppendAction["Append Resources Section<br/>with next note link"]
+        AppendAction --> NotesContent
+    end
+
+    %% Final Step: Import to Obsidian
+    NotesContent -- after all steps --> FinalNotes["Final Notes"]
+    FinalNotes -- import into Obsidian --> ObsidianVault["Obsidian Vault"]
+```
+
 ## Repository Structure
 
 ```textfile
