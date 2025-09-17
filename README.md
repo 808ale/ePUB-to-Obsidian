@@ -21,7 +21,7 @@ flowchart TD
 
     %% Step 1: Convert Book to MD
     subgraph Step 1: Convert Book to Single Markdown
-        A["Source Book PDF/ePUB"]
+        A["Source Book ePUB"]
         A -- feed book --> ConvertScript["epub2obsidian.py<br/>Step 1"]
         ConvertScript --> ConvertAction["Convert to Markdown"]
         ConvertAction --> MD_Full["Full Markdown Book single file"]
